@@ -6,76 +6,123 @@
     <title>LangChain RAG System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/8.0.0/marked.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366F1', // Indigo
+                        secondary: '#F97316', // Orange
+                        accent: '#8B5CF6', // Purple
+                        success: '#10B981', // Emerald
+                        warning: '#FBBF24', // Amber
+                        danger: '#EF4444', // Red
+                        background: '#F0F9FF' // Light blue background
+                    },
+                    boxShadow: {
+                        'custom': '0 10px 15px -3px rgba(99, 102, 241, 0.2), 0 4px 6px -2px rgba(99, 102, 241, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gradient-to-br from-background to-indigo-50 min-h-screen">
     <div class="container mx-auto px-4 py-8">
         <!-- Header -->
         <header class="mb-10">
-            <h1 class="text-3xl font-bold text-center text-blue-600">LangChain RAG System</h1>
-            <p class="text-center text-gray-600 mt-2">Retrieval Augmented Generation with Gemini and Qdrant</p>
+            <div class="bg-gradient-to-r from-primary to-accent p-6 rounded-xl shadow-custom text-center">
+                <h1 class="text-4xl font-bold text-white">LangChain RAG System</h1>
+                <p class="text-indigo-100 mt-2 text-lg">Retrieval Augmented Generation with Gemini and Qdrant</p>
+            </div>
         </header>
 
         <!-- Main Content -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Left Panel: Configuration -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <h2 class="text-xl font-semibold mb-4 text-gray-800">Configuration</h2>
+            <div class="bg-white rounded-xl shadow-custom p-6 border-t-4 border-primary">
+                <h2 class="text-2xl font-semibold mb-4 text-primary flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Configuration
+                </h2>
                 
                 <!-- URL Input -->
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="url">
                         Web URL
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-                        id="url" type="text" 
-                        placeholder="https://example.com/article"
-                        name = "url">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                            </svg>
+                        </div>
+                        <input class="shadow appearance-none border rounded-lg w-full py-2 pl-10 pr-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" 
+                            id="url" type="text" 
+                            placeholder="https://example.com/article"
+                            name="url"
+                            value="https://lilianweng.github.io/posts/2023-06-23-agent/">
+                    </div>
                 </div>
 
                 <!-- Source Selection -->
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                <div class="mb-4 p-4 bg-indigo-50 rounded-lg">
+                    <label class="block text-primary text-sm font-bold mb-2">
                         Document Source
                     </label>
                     <div class="flex items-center">
-                        <input id="web" type="radio" name="source" class="h-4 w-4 text-blue-600" checked>
+                        <input id="web" type="radio" name="source" class="h-4 w-4 text-primary focus:ring-primary" checked>
                         <label for="web" class="ml-2 text-sm text-gray-700">Web URL</label>
                     </div>
                     <div class="flex items-center mt-2">
-                        <input id="local" type="radio" name="source" class="h-4 w-4 text-blue-600">
+                        <input id="local" type="radio" name="source" class="h-4 w-4 text-primary focus:ring-primary">
                         <label for="local" class="ml-2 text-sm text-gray-700">Local Documents</label>
                     </div>
                 </div>
 
                 <!-- Vector Store Selection -->
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                <div class="mb-4 p-4 bg-purple-50 rounded-lg">
+                    <label class="block text-accent text-sm font-bold mb-2">
                         Vector Store
                     </label>
                     <div class="flex items-center">
-                        <input id="qdrant" type="radio" name="vectorstore" class="h-4 w-4 text-blue-600" checked>
+                        <input id="qdrant" type="radio" name="vectorstore" class="h-4 w-4 text-accent focus:ring-accent" checked>
                         <label for="qdrant" class="ml-2 text-sm text-gray-700">Qdrant</label>
                     </div>
                     <div class="flex items-center mt-2">
-                        <input id="faiss" type="radio" name="vectorstore" class="h-4 w-4 text-blue-600">
+                        <input id="faiss" type="radio" name="vectorstore" class="h-4 w-4 text-accent focus:ring-accent">
                         <label for="faiss" class="ml-2 text-sm text-gray-700">FAISS (Local)</label>
                     </div>
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="flex flex-col space-y-2">
-                    <button id="load-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                <div class="flex flex-col space-y-3">
+                    <button id="load-btn" class="bg-primary hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                        </svg>
                         Load Documents
                     </button>
-                    <button id="clear-btn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    <button id="clear-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 transition-all duration-200 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
                         Clear All
                     </button>
                 </div>
             </div>
 
             <!-- Middle Panel: Query -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <h2 class="text-xl font-semibold mb-4 text-gray-800">Query</h2>
+            <div class="bg-white rounded-xl shadow-custom p-6 border-t-4 border-secondary">
+                <h2 class="text-2xl font-semibold mb-4 text-secondary flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Query
+                </h2>
                 
                 <!-- Question Input -->
                 <div class="mb-4">
@@ -83,15 +130,18 @@
                         Your Question
                     </label>
                     <textarea 
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline h-40" 
+                        class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 mb-3 leading-tight focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent h-40" 
                         id="question" 
-                        name = "question"
+                        name="question"
                         placeholder="Enter your question here..."
                     >ChatGPT Plugins?</textarea>
                 </div>
 
                 <!-- Submit Button -->
-                <button id="submit-btn" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
+                <button id="submit-btn" class="bg-secondary hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary transition-all duration-200 w-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
                     Generate Answer
                 </button>
 
@@ -100,22 +150,27 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2">
                         Status
                     </label>
-                    <div id="status" class="bg-gray-100 p-3 rounded text-sm text-gray-700">
+                    <div id="status" class="bg-gray-100 p-3 rounded-lg text-sm text-gray-700 border-l-4 border-blue-400">
                         Ready
                     </div>
                 </div>
             </div>
 
             <!-- Right Panel: Results -->
-            <div class="bg-white rounded-lg shadow p-6 h-full">
-                <h2 class="text-xl font-semibold mb-4 text-gray-800">Results</h2>
+            <div class="bg-white rounded-xl shadow-custom p-6 h-full border-t-4 border-success">
+                <h2 class="text-2xl font-semibold mb-4 text-success flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Results
+                </h2>
                 
                 <!-- Answer Display -->
                 <div class="mb-6">
                     <label class="block text-gray-700 text-sm font-bold mb-2">
                         Generated Answer
                     </label>
-                    <div id="answer" class="bg-gray-100 p-4 rounded-lg max-h-60 overflow-y-auto prose">
+                    <div id="answer" class="bg-gradient-to-r from-green-50 to-teal-50 p-4 rounded-lg max-h-60 overflow-y-auto prose border border-green-200">
                         <p class="text-gray-500 italic">Answer will appear here...</p>
                     </div>
                 </div>
@@ -125,7 +180,7 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2">
                         Sources
                     </label>
-                    <div id="sources" class="bg-gray-100 p-4 rounded-lg max-h-64 overflow-y-auto">
+                    <div id="sources" class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg max-h-64 overflow-y-auto border border-blue-200">
                         <p class="text-gray-500 italic">Sources will appear here...</p>
                     </div>
                 </div>
@@ -133,9 +188,14 @@
         </div>
 
         <!-- History Panel -->
-        <div class="mt-8 bg-white rounded-lg shadow p-6">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800">Query History</h2>
-            <div id="history" class="divide-y divide-gray-200">
+        <div class="mt-8 bg-white rounded-xl shadow-custom p-6 border-l-4 border-accent">
+            <h2 class="text-2xl font-semibold mb-4 text-accent flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Query History
+            </h2>
+            <div id="history" class="divide-y divide-purple-100">
                 <p class="text-gray-500 italic py-4">Your query history will appear here...</p>
                 <!-- History items will be added here -->
             </div>
@@ -144,97 +204,105 @@
 
     <script>
         document.getElementById('submit-btn').addEventListener('click', async function() {
-    // Show loading status
-    const statusEl = document.getElementById('status');
-    statusEl.textContent = 'Processing...';
-    statusEl.classList.add('bg-yellow-100');
-    statusEl.classList.remove('bg-gray-100', 'bg-green-100', 'bg-red-100');
-    
-    // Get the question and URL
-    const question = document.getElementById('question').value;
-    const url = document.getElementById('url').value;
-    
-    // Validate inputs
-    if (!question.trim() || !url.trim()) {
-        statusEl.textContent = 'Error: Please provide both a URL and a question';
-        statusEl.classList.add('bg-red-100');
-        statusEl.classList.remove('bg-yellow-100');
-        return;
-    }
-    
-    try {
-        // Make the actual API call to your backend
-        const response = await fetch(`/langchain/rag?url=${encodeURIComponent(url)}&question=${encodeURIComponent(question)}`);
-        
-        if (!response.ok) {
-            throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
-        }
-        
-        const data = await response.json();
-        
-        // Update status to success
-        statusEl.textContent = 'Completed';
-        statusEl.classList.add('bg-green-100');
-        statusEl.classList.remove('bg-yellow-100');
-        
-        // Display the answer using marked (markdown parser)
-        // Make sure marked.js is included in your HTML file
-        document.getElementById('answer').innerHTML = marked.parse(data.response.answer || data.response);
-        
-        // Display sources if they exist
-        const sourcesDiv = document.getElementById('sources');
-        sourcesDiv.innerHTML = '';
-        
-        if (data.response.sources && Array.isArray(data.response.sources)) {
-            data.response.sources.forEach((source, i) => {
-                const sourceDiv = document.createElement('div');
-                sourceDiv.className = 'mb-3 p-3 border rounded';
+            // Show loading status
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = 'Processing...';
+            statusEl.classList.add('bg-yellow-100', 'border-l-4', 'border-yellow-400');
+            statusEl.classList.remove('bg-gray-100', 'bg-green-100', 'bg-red-100', 'border-blue-400', 'border-green-400', 'border-red-400');
+            
+            // Get the question and URL
+            const question = document.getElementById('question').value;
+            const url = document.getElementById('url').value;
+            
+            // Validate inputs
+            if (!question.trim() || !url.trim()) {
+                statusEl.textContent = 'Error: Please provide both a URL and a question';
+                statusEl.classList.add('bg-red-100', 'border-l-4', 'border-red-400');
+                statusEl.classList.remove('bg-yellow-100', 'border-yellow-400');
+                return;
+            }
+            
+            try {
+                // Make the actual API call to your backend
+                const response = await fetch(`/langchain/rag?url=${encodeURIComponent(url)}&question=${encodeURIComponent(question)}`);
                 
-                // Handle different source formats
-                const content = source.content || source.text || '';
-                const sourceUrl = source.metadata?.source || source.source || url;
+                if (!response.ok) {
+                    throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+                }
                 
-                sourceDiv.innerHTML = `
-                    <p class="font-semibold">Source ${i + 1}</p>
-                    <p class="text-sm">${content.substring(0, 200)}${content.length > 200 ? '...' : ''}</p>
-                    <p class="text-xs text-blue-600"><a href="${sourceUrl}" target="_blank">${sourceUrl}</a></p>
-                `;
-                sourcesDiv.appendChild(sourceDiv);
-            });
-        } else {
-            sourcesDiv.innerHTML = '<p class="text-sm italic">No sources provided</p>';
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        
-        // Update status to error
-        statusEl.textContent = `Error: ${error.message}`;
-        statusEl.classList.add('bg-red-100');
-        statusEl.classList.remove('bg-yellow-100');
-        
-        // Clear previous results
-        document.getElementById('answer').innerHTML = '';
-        document.getElementById('sources').innerHTML = '';
-    }
-});
+                const data = await response.json();
+                
+                // Update status to success
+                statusEl.textContent = 'Completed';
+                statusEl.classList.add('bg-green-100', 'border-green-400');
+                statusEl.classList.remove('bg-yellow-100', 'border-yellow-400');
+                
+                // Display the answer using marked (markdown parser)
+                document.getElementById('answer').innerHTML = marked.parse(data.response.answer || data.response);
+                
+                // Display sources if they exist
+                const sourcesDiv = document.getElementById('sources');
+                sourcesDiv.innerHTML = '';
+                
+                if (data.response.sources && Array.isArray(data.response.sources)) {
+                    data.response.sources.forEach((source, i) => {
+                        const sourceDiv = document.createElement('div');
+                        sourceDiv.className = 'mb-3 p-3 border rounded bg-white';
+                        
+                        // Handle different source formats
+                        const content = source.content || source.text || '';
+                        const sourceUrl = source.metadata?.source || source.source || url;
+                        
+                        sourceDiv.innerHTML = `
+                            <p class="font-semibold text-primary">Source ${i + 1}</p>
+                            <p class="text-sm">${content.substring(0, 200)}${content.length > 200 ? '...' : ''}</p>
+                            <p class="text-xs text-blue-600"><a href="${sourceUrl}" target="_blank">${sourceUrl}</a></p>
+                        `;
+                        sourcesDiv.appendChild(sourceDiv);
+                    });
+                } else {
+                    sourcesDiv.innerHTML = '<p class="text-sm italic">No sources provided</p>';
+                }
                 
                 // Add to history
-        //         const historyDiv = document.getElementById('history');
-        //         if (historyDiv.querySelector('.italic')) {
-        //             historyDiv.innerHTML = '';
-        //         }
+                const historyDiv = document.getElementById('history');
+                if (historyDiv.querySelector('.italic')) {
+                    historyDiv.innerHTML = '';
+                }
                 
-        //         const historyItem = document.createElement('div');
-        //         historyItem.className = 'py-4';
-        //         historyItem.innerHTML = `
-        //             <p class="font-semibold">${question}</p>
-        //             <p class="text-sm text-gray-600 mt-1">${new Date().toLocaleString()}</p>
-        //             <p class="text-sm text-gray-600 mt-1">Source: ${document.querySelector('input[name="source"]:checked').id}</p>
-        //         `;
-        //         historyDiv.prepend(historyItem);
+                const historyItem = document.createElement('div');
+                historyItem.className = 'py-4';
+                historyItem.innerHTML = `
+                    <div class="flex items-start">
+                        <div class="bg-indigo-100 rounded-full p-2 mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-semibold text-primary">${question}</p>
+                            <div class="flex justify-between mt-1">
+                                <p class="text-sm text-gray-600">${new Date().toLocaleString()}</p>
+                                <p class="text-sm text-accent">Source: ${document.querySelector('input[name="source"]:checked').id}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                historyDiv.prepend(historyItem);
                 
-        //     }, 2000);
-        // });
+            } catch (error) {
+                console.error('Error:', error);
+                
+                // Update status to error
+                statusEl.textContent = `Error: ${error.message}`;
+                statusEl.classList.add('bg-red-100', 'border-red-400');
+                statusEl.classList.remove('bg-yellow-100', 'border-yellow-400');
+                
+                // Clear previous results
+                document.getElementById('answer').innerHTML = '<p class="text-red-500">An error occurred while processing your request.</p>';
+                document.getElementById('sources').innerHTML = '<p class="text-red-500">No sources available due to error.</p>';
+            }
+        });
         
         // Clear button functionality
         document.getElementById('clear-btn').addEventListener('click', function() {
@@ -243,19 +311,30 @@
             document.getElementById('answer').innerHTML = '<p class="text-gray-500 italic">Answer will appear here...</p>';
             document.getElementById('sources').innerHTML = '<p class="text-gray-500 italic">Sources will appear here...</p>';
             document.getElementById('status').textContent = 'Ready';
-            document.getElementById('status').className = 'bg-gray-100 p-3 rounded text-sm text-gray-700';
+            document.getElementById('status').className = 'bg-gray-100 p-3 rounded-lg text-sm text-gray-700 border-l-4 border-blue-400';
         });
         
         // Load documents button functionality
         document.getElementById('load-btn').addEventListener('click', function() {
-            document.getElementById('status').textContent = 'Loading documents...';
-            document.getElementById('status').classList.add('bg-yellow-100');
-            document.getElementById('status').classList.remove('bg-gray-100');
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = 'Loading documents...';
+            statusEl.classList.add('bg-yellow-100', 'border-yellow-400');
+            statusEl.classList.remove('bg-gray-100', 'border-blue-400');
             
             setTimeout(() => {
-                document.getElementById('status').textContent = 'Documents loaded successfully';
-                document.getElementById('status').classList.add('bg-green-100');
-                document.getElementById('status').classList.remove('bg-yellow-100');
+                statusEl.textContent = 'Documents loaded successfully';
+                statusEl.classList.add('bg-green-100', 'border-green-400');
+                statusEl.classList.remove('bg-yellow-100', 'border-yellow-400');
+                
+                // Add a little animation to show success
+                const loadBtn = document.getElementById('load-btn');
+                loadBtn.classList.add('bg-success');
+                loadBtn.classList.remove('bg-primary');
+                
+                setTimeout(() => {
+                    loadBtn.classList.add('bg-primary');
+                    loadBtn.classList.remove('bg-success');
+                }, 1000);
             }, 1500);
         });
     </script>
