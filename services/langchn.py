@@ -7,7 +7,9 @@ from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 from langchain_qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
-import copy
+from langgraph.graph import MessagesState,StateGraph
+from langchain_core.tools import tool
+
 
 from typing import List, Dict, Any
 from dotenv import load_dotenv
@@ -24,7 +26,7 @@ if not os.environ.get("GOOGLE_API_KEY"):
     os.environ["GOOGLE_API_KEY"] = getpass.getpass("Enter API key for Google Gemini: ")
 
 
-def load_and_split_documents(url="https://greenvoyage.co.ke/"):
+def load_and_split_documents(url:str):
     
     loader = WebBaseLoader(
         web_paths=(url,),
@@ -55,12 +57,12 @@ def load_local_documents(docs_dir="./documents"):
     return all_splits
 
 
-def retrieve_documents(query: str, use_web=True) -> List[Document]:
+def retrieve_documents(question:str, url:str, use_web=True) -> List[Document]:
     """Retrieve relevant documents based on the query."""
     try:
         # Load documents
         if use_web:
-            documents = load_and_split_documents()
+            documents = load_and_split_documents(url)
         else:
             documents = load_local_documents()
         
@@ -71,7 +73,7 @@ def retrieve_documents(query: str, use_web=True) -> List[Document]:
         vector_store = FAISS.from_documents(documents=documents, embedding=embeddings)
         
         # Retrieve relevant documents
-        retrieved_docs = vector_store.similarity_search(query, k=4)
+        retrieved_docs = vector_store.similarity_search(question, k=4)
         
         return retrieved_docs
     
@@ -79,12 +81,14 @@ def retrieve_documents(query: str, use_web=True) -> List[Document]:
         print(f"Error in retrieve_documents: {str(e)}")
         return []
 
-
+# @tool(name="LangChainRAG", description="LangChain RAG system")
 def generate_answer(query: str, context_docs: List[Document]) -> str:
     """Generate an answer based on retrieved documents."""
     try:
         # Initialize model
         model = init_chat_model("gemini-2.0-flash", model_provider="google_genai")
+        
+        graph_builder = StateGraph(MessagesState)
         
         # Create prompt
         template = """Answer the question based on the following context:
@@ -107,20 +111,20 @@ def generate_answer(query: str, context_docs: List[Document]) -> str:
         return response.content
     
     except Exception as e:
-        print(f"Error in generate_answer: {str(e)}")
+        print(f"Error in generate_answer {str(e)}")
         return f"An error occurred: {str(e)}"
 
 
 
 
-def LangChainRAG():
+def LangChainRAG(url,question):
 
     try:
         # Query, search and answer
-        question = "What do you offer?"
+        # question = "carbon footprint"
         print(f"\nQuestion: {question}")
         
-        retrieved_docs = retrieve_documents(question, use_web=True)
+        retrieved_docs = retrieve_documents(question, url, use_web=True)
         print(f"\nRetrieved {len(retrieved_docs)} documents.")
         
         answer = generate_answer(question, retrieved_docs)
